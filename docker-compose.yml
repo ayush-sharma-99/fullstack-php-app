@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: fullstack_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword            # change for production
+      MYSQL_DATABASE: employees_db
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-net
+
+  web:
+    build: .
+    image: YOUR_DOCKERHUB_USERNAME/fullstack-php-app:latest
+    container_name: fullstack_web
+    depends_on:
+      - db
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_NAME: employees_db
+      DB_USER: appuser
+      DB_PASS: apppassword
+    ports:
+      - "8080:80"
+    networks:
+      - app-net
+    volumes:
+      - ./:/var/www/html   # optional for live code changes during dev
+
+volumes:
+  db_data:
+
+networks:
+  app-net:
+
