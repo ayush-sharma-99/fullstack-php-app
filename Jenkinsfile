@@ -1,13 +1,9 @@
 pipeline {
     agent any
 
-    tools {
-        sonarRunner 'SonarScanner'
-    }
-
     environment {
         SONAR_HOST  = "http://13.60.186.213:9000"
-        PROJECT_KEY = "fullstack-php-app"
+        PROJECT_KEY = "sonar-scan"   // your actual SonarQube project key
     }
 
     stages {
